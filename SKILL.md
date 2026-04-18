@@ -1,6 +1,6 @@
 ---
 name: megaeth-developer
-description: End-to-end MegaETH development playbook (Feb 2026). Covers Foundry project setup with MegaETH-specific config, wallet operations, token swaps (Kyber Network), eth_sendRawTransactionSync (EIP-7966) for instant receipts, JSON-RPC batching, real-time mini-block subscriptions, storage-aware contract patterns (Solady RedBlackTreeLib, transient storage), MegaEVM multidimensional gas model, WebSocket keepalive, bridging from Ethereum, Privy headless signing for ultra-low latency, debugging with mega-evme, x402 Permit2 payments on MegaETH (standard flow via x402ExactPermit2Proxy/x402UptoPermit2Proxy at canonical addresses), legacy Meridian x402 payments, and Warren Protocol for on-chain website hosting. Use when building on MegaETH, using Foundry, managing wallets, sending transactions, deploying contracts, integrating Privy embedded wallets, ERC-7710 delegation framework for scoped on-chain permissions, MetaMask Smart Accounts Kit for smart account creation and delegation management, integrating x402 Permit2 payments or Meridian/x402 paid APIs or agent actions, hosting websites on-chain with Warren, or integrating MegaNames (.mega naming service) for name registration, resolution, subdomains, subdomain marketplace (selling/buying subdomains with token gating), and text records.
+description: End-to-end MegaETH development playbook (Feb 2026). Covers Foundry project setup with MegaETH-specific config, wallet operations, token swaps (Kyber Network), eth_sendRawTransactionSync (EIP-7966) for instant receipts, JSON-RPC batching, real-time mini-block subscriptions, storage-aware contract patterns (Solady RedBlackTreeLib, transient storage), MegaEVM multidimensional gas model, WebSocket keepalive, bridging from Ethereum, Privy headless signing for ultra-low latency, debugging with mega-evme, @moldy/mega-mpp-sdk for Machine Payments Protocol paid routes on MegaETH (`charge` and `session`), x402 Permit2 payments on MegaETH (standard flow via x402ExactPermit2Proxy/x402UptoPermit2Proxy at canonical addresses), legacy Meridian x402 payments, and Warren Protocol for on-chain website hosting. Use when building on MegaETH, using Foundry, managing wallets, sending transactions, deploying contracts, integrating Privy embedded wallets, integrating @moldy/mega-mpp-sdk, ERC-7710 delegation framework for scoped on-chain permissions, MetaMask Smart Accounts Kit for smart account creation and delegation management, integrating x402 Permit2 payments or Meridian/x402 paid APIs or agent actions, hosting websites on-chain with Warren, or integrating MegaNames (.mega naming service) for name registration, resolution, subdomains, subdomain marketplace (selling/buying subdomains with token gating), and text records.
 ---
 
 # MegaETH Development Skill
@@ -22,6 +22,7 @@ Use this Skill when the user asks for:
 - WebSocket subscriptions and mini-block streaming
 - Bridging ETH from Ethereum to MegaETH
 - Privy integration for headless/automated signing
+- Machine Payments Protocol integrations with `@moldy/mega-mpp-sdk`
 - x402 payments on MegaETH (Permit2 — preferred)
 - Meridian / x402 legacy payments on MegaETH
 - Ultra-low latency transaction patterns
@@ -29,6 +30,12 @@ Use this Skill when the user asks for:
 - MetaMask Smart Accounts (ERC-4337 accounts, signers, user operations)
 - Advanced permissions (ERC-7715) via MetaMask
 - MegaNames (.mega naming service) — registration, resolution, subdomains, subdomain marketplace, text records
+
+## Payment routing
+
+- Use [x402-payments.md](x402-payments.md) for raw Permit2 / x402 proxy integrations without the SDK.
+- Use [meridian.md](meridian.md) when settlement goes through Meridian's facilitator and `/v1/settle` API.
+- Use [mega-mpp-sdk.md](mega-mpp-sdk.md) when the user explicitly names `@moldy/mega-mpp-sdk`, wants Machine Payments Protocol paid routes, or needs reusable `session` payment channels.
 
 ## Chain Configuration
 
@@ -107,6 +114,7 @@ When implementing changes, provide:
 - Wallet operations: [wallet-operations.md](wallet-operations.md)
 - Frontend patterns: [frontend-patterns.md](frontend-patterns.md)
 - Privy integration: [privy-integration.md](privy-integration.md)
+- MPP SDK integrations: [mega-mpp-sdk.md](mega-mpp-sdk.md)
 - x402 payments (Permit2): [x402-payments.md](x402-payments.md)
 - Meridian payments (legacy): [meridian.md](meridian.md)
 - RPC methods reference: [rpc-methods.md](rpc-methods.md)

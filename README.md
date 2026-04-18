@@ -12,6 +12,7 @@ This skill provides AI agents with deep knowledge of the MegaETH development eco
 - **Gas Model**: MegaEVM-specific costs and estimation strategies
 - **Debugging**: mega-evme CLI for transaction replay and gas profiling
 - **Security**: MegaETH-specific considerations and audit checklists
+- **SDK Payments**: `@moldy/mega-mpp-sdk` for MPP `charge` and `session` flows on MegaETH
 - **Meridian**: x402 payments on MegaETH for seller/server and buyer/agent flows
 - **MegaNames**: .mega naming service — registration, resolution, subdomains, subdomain marketplace
 
@@ -50,6 +51,7 @@ clawdhub install megaeth-developer
 ├── security.md               # Vulnerabilities and prevention
 ├── erc7710-delegations.md    # ERC-7710 delegation framework, caveats, permissions
 ├── smart-accounts.md         # MetaMask Smart Accounts Kit, signers, user operations
+├── mega-mpp-sdk.md           # @moldy/mega-mpp-sdk paid route integration guide
 ├── meridian.md               # Meridian x402 payments on MegaETH
 ├── meganames.md              # MegaNames (.mega) — registration, resolution, subdomains, marketplace
 ├── warren.md                 # Warren Protocol — on-chain website hosting
@@ -66,6 +68,7 @@ Once installed, your AI agent will automatically use this skill when you ask abo
 - Storage optimization and gas costs
 - Real-time WebSocket subscriptions
 - Debugging failed transactions
+- Machine Payments Protocol paid routes on MegaETH
 
 ### Example Prompts
 
@@ -84,6 +87,9 @@ Once installed, your AI agent will automatically use this skill when you ask abo
 "Create a MetaMask Smart Account on MegaETH"
 "Set up spending limits and time-bound permissions"
 "Implement redelegation chains"
+"Add a paid API with MPP (Machine Payments Protocol) on MegaETH"
+"Protect a Cloudflare Worker route on MegaETH with MPP (Machine Payments Protocol)"
+"Use reusable session payments with MPP (Machine Payments Protocol) on MegaETH"
 "Protect an API route with Meridian on MegaETH"
 "Set up a buyer agent to pay with USDm through Meridian"
 "Register a .mega name and resolve it"
