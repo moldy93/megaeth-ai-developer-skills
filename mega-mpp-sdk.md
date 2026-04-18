@@ -11,6 +11,10 @@ Do not use this file for every paid API task:
 - use [x402-payments.md](x402-payments.md) for raw Permit2 / x402 proxy integrations without this SDK
 - use [meridian.md](meridian.md) when settlement goes through Meridian's facilitator and `/v1/settle`
 
+This file covers the current `@moldy/mega-mpp-sdk` integration path. If the
+MegaETH / MPP ecosystem later standardizes on a different recommended SDK,
+update this routing.
+
 ## Public package entrypoints
 
 Use only these imports:
