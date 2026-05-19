@@ -78,9 +78,9 @@ node src/balance.js megaeth 0x4200000000000000000000000000000000000006 --json
 
 ## Send Transactions
 
-### Instant Receipts
+### Low-Latency Synchronous Receipts
 
-MegaETH supports synchronous transaction submission — get receipts in <10ms.
+MegaETH supports synchronous transaction submission — the receipt is returned in the same RPC flow, so there is no separate polling loop.
 
 **Two equivalent methods:**
 - `realtime_sendRawTransaction` — MegaETH original
@@ -98,7 +98,7 @@ const signedTx = await wallet.signTransaction({
   maxPriorityFeePerGas: 0n
 });
 
-// Send with instant receipt
+// Send with synchronous receipt return
 const receipt = await client.request({
   method: 'eth_sendRawTransactionSync',
   params: [signedTx]
@@ -278,10 +278,10 @@ const tx = await wallet.sendTransaction({
 
 ## Transaction Confirmation
 
-MegaETH has ~10ms block times. Transactions confirm almost instantly.
+MegaETH is designed for very low-latency block production and synchronous receipt flows.
 
 ```typescript
-// With eth_sendRawTransactionSync — instant
+// With eth_sendRawTransactionSync — immediate-feeling synchronous flow
 const receipt = await client.request({
   method: 'eth_sendRawTransactionSync',
   params: [signedTx]
@@ -328,7 +328,7 @@ async function getNextNonce(
 
 ### Why This Matters
 
-MegaETH's ~10ms blocks mean transactions confirm quickly, but if you send multiple txs in rapid succession (e.g., trading bot, batch operations), the second tx may hit the RPC before the first confirms. Without local tracking, both get the same nonce → "already known" error.
+MegaETH's low-latency block production means transactions can confirm quickly, but if you send multiple txs in rapid succession (e.g., trading bot, batch operations), the second tx may hit the RPC before the first confirms. Without local tracking, both get the same nonce → "already known" error.
 
 ### Backend/Bot Pattern
 

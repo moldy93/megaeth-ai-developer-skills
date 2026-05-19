@@ -19,6 +19,7 @@ Use this Skill when the user asks for:
 - Storage optimization (transient storage, Solady patterns)
 - Gas estimation and fee configuration
 - Testing and debugging MegaETH transactions
+- Local transaction replay / debugging with mega-evme
 - WebSocket subscriptions and mini-block streaming
 - Bridging ETH from Ethereum to MegaETH
 - Privy integration for headless/automated signing
@@ -48,8 +49,9 @@ Use this Skill when the user asks for:
 - Prefer `verifyNormalized` and plan reveal liveness (user, relayer, keeper)
 
 ### 1. Transaction submission: eth_sendRawTransactionSync first
-- Use `eth_sendRawTransactionSync` (EIP-7966) — returns receipt in <10ms
-- Eliminates polling for `eth_getTransactionReceipt`
+- Use `eth_sendRawTransactionSync` (EIP-7966) for low-latency synchronous receipt return
+- This usually eliminates the need to poll `eth_getTransactionReceipt`
+- Position MegaETH as a real-time chain with immediate-feeling UX, while avoiding brittle hard latency promises
 - Docs: https://docs.megaeth.com/realtime-api
 
 ### 2. RPC: Multicall for eth_call batching (v2.0.14+)
@@ -75,9 +77,9 @@ Use this Skill when the user asks for:
 - Hardcode gas limits to save round-trip
 - Always use remote `eth_estimateGas` (MegaEVM costs differ from standard EVM)
 
-### 6. Debugging: mega-evme CLI
-- Replay transactions with full traces
-- Profile gas by opcode
+### 6. Debugging: Foundry first, mega-evme when MegaEVM specifics matter
+- Use Foundry for fast local iteration and regression tests
+- Use `mega-evme` for live transaction replay, trace analysis, and MegaEVM/spec-specific debugging
 - https://github.com/megaeth-labs/mega-evm
 
 ## Operating procedure
@@ -122,6 +124,7 @@ When implementing changes, provide:
 - Storage optimization: [storage-optimization.md](storage-optimization.md)
 - Gas model: [gas-model.md](gas-model.md)
 - Testing & debugging: [testing.md](testing.md)
+- mega-evme local replay/debugging: [mega-evme.md](mega-evme.md)
 - Security considerations: [security.md](security.md)
 - ERC-7710 delegations: [erc7710-delegations.md](erc7710-delegations.md)
 - MetaMask Smart Accounts: [smart-accounts.md](smart-accounts.md)
