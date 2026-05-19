@@ -49,7 +49,7 @@ Full deployment list: [erc-8004/erc-8004-contracts](https://github.com/erc-8004/
 ## Default Stack Decisions (Opinionated)
 
 ### 1. Use `eth_sendRawTransactionSync` for all writes
-MegaETH returns receipts in <10ms via EIP-7966. No polling needed after registration or feedback calls.
+MegaETH supports EIP-7966-style synchronous receipt return, so no separate polling loop is needed after registration or feedback calls.
 
 ### 2. Use viem over ethers.js
 The `@agentic-trust/8004-sdk` supports both. Prefer viem for consistency with MegaETH patterns.
@@ -430,7 +430,7 @@ Optional detailed feedback stored on IPFS:
 ## MegaETH-Specific Notes
 
 - **Gas:** Registration mints an ERC-721 (new storage slots). Use `eth_estimateGas` via RPC — MegaETH SSTORE costs differ from standard EVM.
-- **Instant receipts:** Use `eth_sendRawTransactionSync` (EIP-7966) for all write operations.
+- **Low-latency synchronous receipts:** Use `eth_sendRawTransactionSync` (EIP-7966) for all write operations.
 - **State growth:** Each new agent identity creates storage slots. Be aware of MegaETH's 1,000 slot per-tx limit for batch operations.
 - **Subgraphs:** Feedback data is stored on-chain + emitted as events. Use subgraphs or event indexing for efficient querying.
 - **Sybil resistance:** Always filter reputation queries by trusted `clientAddresses`. Unfiltered `getSummary` calls are meaningless.

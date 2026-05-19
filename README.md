@@ -1,12 +1,12 @@
 # MegaETH Developer Skill for AI Agents
 
-A comprehensive skill for AI coding agents (Claude Code, OpenClaw, Codex) to build real-time applications on MegaETH.
+A comprehensive skill for AI coding agents (Claude Code, OpenClaw, Codex) to build real-time applications on MegaETH, with explicit MegaEVM/spec-version awareness.
 
 ## Overview
 
 This skill provides AI agents with deep knowledge of the MegaETH development ecosystem:
 
-- **Transactions**: `eth_sendRawTransactionSync` (EIP-7966) for instant receipts
+- **Transactions**: `eth_sendRawTransactionSync` (EIP-7966) for low-latency synchronous receipt return without polling
 - **RPC Patterns**: JSON-RPC batching, WebSocket keepalive, mini-block subscriptions
 - **Storage**: Optimization patterns to avoid expensive SSTORE costs
 - **Gas Model**: MegaEVM-specific costs and estimation strategies
@@ -15,6 +15,7 @@ This skill provides AI agents with deep knowledge of the MegaETH development eco
 - **SDK Payments**: `@moldy/mega-mpp-sdk` for MPP `charge` and `session` flows on MegaETH
 - **Meridian**: x402 payments on MegaETH for seller/server and buyer/agent flows
 - **MegaNames**: .mega naming service — registration, resolution, subdomains, subdomain marketplace
+- **VRF / Randomness**: drand quicknet verifier integration for lotteries, reveals, and game mechanics
 
 ## Installation
 
@@ -47,7 +48,8 @@ clawdhub install megaeth-developer
 ├── smart-contracts.md        # MegaEVM patterns, volatile data, predeploys
 ├── storage-optimization.md   # SSTORE costs, Solady RedBlackTreeLib
 ├── gas-model.md              # Gas costs, estimation, base fee
-├── testing.md                # mega-evme, Foundry, debugging
+├── testing.md                # Foundry/testing + general debugging entrypoint
+├── mega-evme.md              # mega-evme local replay/spec-aware debugging workflow
 ├── security.md               # Vulnerabilities and prevention
 ├── erc7710-delegations.md    # ERC-7710 delegation framework, caveats, permissions
 ├── smart-accounts.md         # MetaMask Smart Accounts Kit, signers, user operations
@@ -55,6 +57,7 @@ clawdhub install megaeth-developer
 ├── meridian.md               # Meridian x402 payments on MegaETH
 ├── meganames.md              # MegaNames (.mega) — registration, resolution, subdomains, marketplace
 ├── warren.md                 # Warren Protocol — on-chain website hosting
+├── vrf-drand.md              # drand VRF / verifiable randomness on MegaETH
 └── resources.md              # Links, tools, explorers, bridges, DEX
 ```
 
@@ -69,6 +72,8 @@ Once installed, your AI agent will automatically use this skill when you ask abo
 - Real-time WebSocket subscriptions
 - Debugging failed transactions
 - Machine Payments Protocol paid routes on MegaETH
+- Replaying or locally debugging MegaETH transactions with mega-evme
+- Understanding when to use Foundry vs mega-evme for diagnosis
 
 ### Example Prompts
 
@@ -90,6 +95,8 @@ Once installed, your AI agent will automatically use this skill when you ask abo
 "Add a paid API with MPP (Machine Payments Protocol) on MegaETH"
 "Protect a Cloudflare Worker route on MegaETH with MPP (Machine Payments Protocol)"
 "Use reusable session payments with MPP (Machine Payments Protocol) on MegaETH"
+"Build a lottery or reveal flow with drand VRF on MegaETH"
+"How should I safely integrate randomness on MegaETH?"
 "Protect an API route with Meridian on MegaETH"
 "Set up a buyer agent to pay with USDm through Meridian"
 "Register a .mega name and resolve it"
@@ -97,19 +104,29 @@ Once installed, your AI agent will automatically use this skill when you ask abo
 "Integrate MegaNames resolution into my dApp"
 ```
 
+### Which file should an agent read?
+
+- `testing.md` → broad testing, Foundry workflows, common troubleshooting
+- `mega-evme.md` → local replay, trace analysis, spec-aware MegaEVM debugging
+- `smart-contracts.md` → contract design constraints, system contracts, volatile data behavior
+
 ## Key Concepts
 
-### Instant Transaction Receipts
+### Synchronous Transaction Receipts
 
-MegaETH supports `eth_sendRawTransactionSync` (EIP-7966) — get your receipt in <10ms instead of polling:
+MegaETH supports `eth_sendRawTransactionSync` (EIP-7966), which enables low-latency synchronous receipt return instead of requiring a separate polling loop:
 
 ```typescript
 const receipt = await client.request({
   method: 'eth_sendRawTransactionSync',
   params: [signedTx]
 });
-// Receipt available immediately
+// Receipt returned in the same RPC flow
 ```
+
+### Spec Awareness
+
+MegaETH behavior is spec-versioned through `REX5`, and not every new MegaEVM behavior is necessarily active on every network yet. Agents should avoid assuming unstable spec behavior (for example REX5 system-contract changes) is live unless the user explicitly asks about current unstable behavior or local node state.
 
 ### Storage Costs
 

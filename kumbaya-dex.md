@@ -88,7 +88,7 @@ npm install @kumbaya_xyz/sdk-core @kumbaya_xyz/v3-sdk @kumbaya_xyz/smart-order-r
 QuoterV2 is a read-only quoter (use `staticCall`). SwapRouter02 executes swaps. Don't mix them.
 
 ### 2. Use `eth_sendRawTransactionSync` for swap execution
-Instant receipts via EIP-7966. No polling needed — critical for trading bots.
+Low-latency synchronous receipts via EIP-7966. No separate polling loop needed — useful for trading bots and immediate-feeling swap UX.
 
 ### 3. Use Permit2 for token approvals
 One-time infinite approve of each token to Permit2, then sign per-swap permits. Better UX and security than per-contract approvals.
@@ -448,7 +448,7 @@ contract MySwapper {
 
 ## MegaETH-Specific Notes
 
-- **Instant receipts:** Use `eth_sendRawTransactionSync` for swap execution — get confirmation in <10ms. Critical for MEV and trading bots.
+- **Synchronous receipts:** Use `eth_sendRawTransactionSync` for swap execution so the receipt is returned in the same RPC flow. This is useful for MEV-sensitive and bot flows.
 - **Gas:** Use `eth_estimateGas` via RPC. MegaETH SSTORE costs differ — first-time Permit2 approval is expensive (new storage slot), subsequent swaps are cheap.
 - **No mempool:** MegaETH has no public mempool. Transactions are ordered by the sequencer. Front-running risk is structurally lower than Ethereum.
 - **Multicall:** Use Multicall2 (`0xf6f404ac6289ab8eB1caf244008b5F073d59385c`) to batch read calls (pool state + quote + balances in one RPC call).
